@@ -1,0 +1,570 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.github.jlgrock</groupId>
+    <artifactId>pom-check-maven-plugin</artifactId>
+    <packaging>maven-plugin</packaging>
+    <version>1.0.0</version>
+
+    <name>POM Check Maven Plugin</name>
+    <description>
+        Maven plugin to check various custom pom restrictions. These restrictions help enforce release
+        processes and reduce team confusion.
+    </description>
+    <url>http://github.com/jlgrock/pom-check-maven-plugin</url>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Justin Grant</name>
+            <email>jlgrock@gmail.com</email>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/jlgrock/pom-check-maven-plugin.git</connection>
+        <developerConnection>scm:git:ssh://github.com:jlgrock/pom-check-maven-plugin.git</developerConnection>
+        <url>http://github.com/jlgrock/pom-check-maven-plugin</url>
+      <tag>pom-check-maven-plugin-1.0.0</tag>
+  </scm>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.source.version>1.8</java.source.version>
+        <java.target.version>1.8</java.target.version>
+
+        <!-- Clean Lifecycle -->
+        <maven.clean-plugin.version>3.0.0</maven.clean-plugin.version>
+
+        <!-- Default/JAR/WAR Lifecycle -->
+        <maven.plugin-plugin.version>3.6.1</maven.plugin-plugin.version>
+        <maven.resources-plugin.version>3.2.0</maven.resources-plugin.version>
+        <maven.surefire-plugin.version>2.22.1</maven.surefire-plugin.version>
+        <maven.compiler-plugin.version>3.8.1</maven.compiler-plugin.version>
+        <maven.jar-plugin.version>3.2.0</maven.jar-plugin.version>
+        <maven.war-plugin.version>3.3.2</maven.war-plugin.version>
+        <maven.install-plugin.version>2.5.2</maven.install-plugin.version>
+        <maven.deploy-plugin.version>3.0.0</maven.deploy-plugin.version>
+        <maven.source-plugin.version>3.2.1</maven.source-plugin.version>
+
+        <!-- Site Lifecycle -->
+        <maven-javadoc-plugin.version>3.3.1</maven-javadoc-plugin.version>
+        <maven.site.plugin>3.9.1</maven.site.plugin>
+
+        <!-- Code Quality plugin versions -->
+        <maven.pmd-plugin.version>3.20.0</maven.pmd-plugin.version>
+        <spotbugs-maven-plugin.version>4.2.3</spotbugs-maven-plugin.version>
+        <junit.version>5.9.2</junit.version>
+        <jacoco.version>0.8.8</jacoco.version>
+
+        <maven.dependency-plugin.version>3.5.0</maven.dependency-plugin.version>
+        <maven.gpg-plugin.version>3.0.1</maven.gpg-plugin.version>
+
+        <!-- Code dependencies -->
+        <plexus.version>0.0.7</plexus.version>
+        <maven.plugin-api.version>3.9.0</maven.plugin-api.version>
+        <maven.maven-plugin-annotations.version>3.7.1</maven.maven-plugin-annotations.version>
+        <maven.maven-project.version>3.0-alpha-2</maven.maven-project.version>
+        <maven.release-plugin.version>2.5.3</maven.release-plugin.version>
+        <mockito.version>5.1.1</mockito.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>${junit.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-plugin-api</artifactId>
+            <version>${maven.plugin-api.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.maven.plugin-tools</groupId>
+            <artifactId>maven-plugin-annotations</artifactId>
+            <version>${maven.maven-plugin-annotations.version}</version>
+            <scope>provided</scope><!-- annotations are needed only to build the plugin -->
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-project</artifactId>
+            <version>${maven.maven-project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.sonatype.plexus</groupId>
+            <artifactId>plexus-build-api</artifactId>
+            <version>${plexus.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.plexus</groupId>
+            <artifactId>plexus-utils</artifactId>
+            <version>3.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-launcher</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+
+                <!--======================================================-->
+                <!-- Clean Lifecycle -->
+                <!--======================================================-->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>${maven.clean-plugin.version}</version>
+                </plugin>
+
+                <!--======================================================-->
+                <!-- Default/JAR/WAR Lifecycle -->
+                <!--======================================================-->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>${maven.resources-plugin.version}</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven.surefire-plugin.version}</version>
+                    <configuration>
+                        <argLine>${surefireArgLine}</argLine>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>${maven-failsafe-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>integration-test</goal>
+                                <goal>verify</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <!-- Sets the VM argument line used when integration tests are run. -->
+                        <argLine>${failsafeArgLine}</argLine>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven-compiler-plugin.version}</version>
+                    <configuration>
+                        <source>${java.source.version}</source>
+                        <target>${java.target.version}</target>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${maven.jar-plugin.version}</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>${maven.war-plugin.version}</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>${maven.install-plugin.version}</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>${maven.deploy-plugin.version}</version>
+                </plugin>
+
+                <!--======================================================-->
+                <!-- Command-Line tooling -->
+                <!--======================================================-->
+
+                <!-- Used to release artifacts -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>${maven.release-plugin.version}</version>
+                    <configuration>
+                        <checkModificationExcludes>
+                            <checkModificationExclude>pom.xml</checkModificationExclude>
+                        </checkModificationExcludes>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>${maven.dependency-plugin.version}</version>
+                    <configuration>
+                        <checkModificationExcludes>
+                            <checkModificationExclude>pom.xml</checkModificationExclude>
+                        </checkModificationExcludes>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-plugin-plugin</artifactId>
+                    <version>${maven.plugin-plugin.version}</version>
+                </plugin>
+
+                <!-- Used in staging.xml file for CI/CD pipelines to push artifacts to Nexus-->
+                <plugin>
+                    <groupId>org.sonatype.plugins</groupId>
+                    <artifactId>nexus-staging-maven-plugin</artifactId>
+                    <version>${maven.nexus-staging.plugin}</version>
+                </plugin>
+
+                <!-- Code Coverage Check -->
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${jacoco.version}</version>
+                    <configuration>
+                        <!--<excludes>-->
+
+                        <!--</excludes>-->
+                    </configuration>
+                    <executions>
+                        <!-- Prepares the property pointing to the JaCoCo runtime agent which
+                        is passed as VM argument when Maven the Surefire plugin is executed. -->
+                        <execution>
+                            <id>pre-unit-test</id>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                            </goals>
+                            <configuration>
+                                <destFile>${project.build.directory}/jacoco/jacoco-ut.exec</destFile>
+                                <!-- Sets the name of the property containing the settings for JaCoCo runtime agent. -->
+                                <propertyName>surefireArgLine</propertyName>
+                            </configuration>
+                        </execution>
+                        <!-- Ensures that the code coverage report for unit tests is created after unit tests have been run. -->
+                        <execution>
+                            <id>post-unit-test</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>report</goal>
+                            </goals>
+                            <configuration>
+                                <!-- Sets the path to the file which contains the execution data. -->
+                                <dataFile>${project.build.directory}/jacoco/jacoco-ut.exec</dataFile>
+                                <!-- Sets the output directory for the code coverage report. -->
+                                <outputDirectory>${project.reporting.outputDirectory}/jacoco-ut</outputDirectory>
+                            </configuration>
+                        </execution>
+
+                        <!-- Prepares the property pointing to the JaCoCo runtime agent which
+                        is passed as VM argument when Maven the Failsafe plugin is executed. -->
+                        <execution>
+                            <id>pre-integration-test</id>
+                            <phase>pre-integration-test</phase>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                            </goals>
+                            <configuration>
+                                <!-- Sets the path to the file which contains the execution data. -->
+                                <destFile>${project.build.directory}/jacoco/jacoco-it.exec</destFile>
+                                <!-- Sets the name of the property containing the settings for JaCoCo runtime agent. -->
+                                <propertyName>failsafeArgLine</propertyName>
+                            </configuration>
+                        </execution>
+                        <!--
+                            Ensures that the code coverage report for integration tests after
+                            integration tests have been run.
+                        -->
+                        <execution>
+                            <id>post-integration-test</id>
+                            <phase>post-integration-test</phase>
+                            <goals>
+                                <goal>report</goal>
+                            </goals>
+                            <configuration>
+                                <!-- Sets the path to the file which contains the execution data. -->
+                                <dataFile>${project.build.directory}/jacoco/jacoco-it.exec</dataFile>
+                                <!-- Sets the output directory for the code coverage report. -->
+                                <outputDirectory>${project.reporting.outputDirectory}/jacoco-it</outputDirectory>
+                            </configuration>
+                        </execution>
+
+                        <!--  the check goal by default runs in the verify phase,
+                        we want to fail the build if minimum code coverage checks aren't met -->
+                        <execution>
+                            <id>check</id>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                            <configuration>
+                                <excludes>
+                                    <!-- exclservicenfig classes from coverage requirements -->
+                                    <exclude>**/*Config.*</exclude>
+                                    <exclude>**/shared/routing/AbstractSoapConnection.*</exclude>
+                                </excludes>
+
+                                <dataFile>${project.build.directory}/jacoco/jacoco-ut.exec</dataFile>
+                                <haltOnFailure>true</haltOnFailure>
+                                <rules>
+                                    <!-- All classes must have 80% line and branch coverage . Note we use 2 d.p so that we get can any check failure messages reported to 2 d.p  -->
+                                    <rule>
+                                        <element>CLASS</element>
+                                        <limits>
+                                            <limit>
+                                                <counter>LINE</counter>
+                                                <value>COVEREDRATIO</value>
+                                                <minimum>0.80</minimum>
+                                            </limit>
+                                            <limit>
+                                                <counter>BRANCH</counter>
+                                                <value>COVEREDRATIO</value>
+                                                <minimum>0.80</minimum>
+                                            </limit>
+                                        </limits>
+                                        <includes>
+                                            <include>com.github.jlgrock.*</include>
+                                        </includes>
+                                    </rule>
+                                </rules>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>${maven.deploy.plugin.version}</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-report-plugin</artifactId>
+                    <version>${maven-surefire-plugin.version}</version>
+                    <configuration>
+                        <properties>
+                            <includeTags>junit5</includeTags>
+                        </properties>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven-surefire-plugin.version}</version>
+                    <configuration>
+                        <argLine>-Dfile.encoding=${project.build.sourceEncoding} ${surefireArgLine}</argLine>
+                        <properties>
+                            <includeTags>junit5</includeTags>
+                        </properties>
+                    </configuration>
+                </plugin>
+
+                <!--
+                    some cases are not detected (constants, annotations with source-only retention, links in javadoc)
+                    nor is test runtime (https://mail-archives.apache.org/mod_mbox/maven-users/200811.mbox/%3C17608340.3674701226307519843.JavaMail.adm-moff@moffice8.nsc.no%3E)
+                    -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>${maven.dependency-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>analyze</id>
+                            <goals>
+                                <goal>analyze</goal>
+                                <goal>analyze-only</goal>
+                            </goals>
+                            <configuration>
+                                <!-- Can't use this full time until we get maven upgraded -->
+                                <!--<failOnWarning>true</failOnWarning>-->
+                                <outputXML>true</outputXML>
+                                <!-- ignore jsr305 for both "used but undeclared" and "declared but unused" -->
+                                <ignoredDependencies>
+                                    <ignoredDependency>com.google.code.findbugs:jsr305</ignoredDependency>
+                                </ignoredDependencies>
+
+                                <!-- ignore annotations for "used but undeclared" warnings -->
+                                <ignoredUsedUndeclaredDependencies>
+                                    <ignoredUsedUndeclaredDependency>com.google.code.findbugs:annotations</ignoredUsedUndeclaredDependency>
+                                </ignoredUsedUndeclaredDependencies>
+
+                                <!-- ignore annotations for "unused but declared" warnings -->
+                                <ignoredUnusedDeclaredDependencies>
+                                    <ignoredUnusedDeclaredDependency>com.google.code.findbugs:annotations</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>org.slf4j:slf4j-simple</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>org.hibernate:hibernate-validator</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>org.hibernate:hibernate-validator-annotation-processor</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>org.apache.geronimo.specs:geronimo-jms_1.1_spec</ignoredUnusedDeclaredDependency>
+                                    <ignoredUnusedDeclaredDependency>org.aspectj:aspectjweaver</ignoredUnusedDeclaredDependency>
+                                </ignoredUnusedDeclaredDependencies>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven.compiler-plugin.version}</version>
+                    <configuration>
+                        <source>${java.source.version}</source>
+                        <target>${java.target.version}</target>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <version>${maven.gpg-plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+            <!-- Reports on unit test code coverage -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+            </plugin>
+
+            <!-- PMD CHECK: Fails build if there are "High" priority violations -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>${maven.pmd-plugin.version}</version>
+                <configuration>
+                    <failurePriority>1</failurePriority>
+                    <failOnViolation>true</failOnViolation>
+                    <aggregate>true</aggregate>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Generate Java Doc jar -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${maven-javadoc-plugin.version}</version>
+                <configuration>
+                    <doclint>none</doclint>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>jar</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Source Files -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${maven.source-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+
+    <profiles>
+        <profile>
+            <id>release-sign-artifacts</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>
