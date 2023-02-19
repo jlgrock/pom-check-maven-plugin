@@ -67,6 +67,7 @@
 
         <maven.dependency-plugin.version>3.5.0</maven.dependency-plugin.version>
         <maven.gpg-plugin.version>3.0.1</maven.gpg-plugin.version>
+        <maven.wrapper-plugin.version>3.1.1</maven.wrapper-plugin.version>
 
         <!-- Code dependencies -->
         <plexus.version>0.0.7</plexus.version>
@@ -472,6 +473,12 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-gpg-plugin</artifactId>
                     <version>${maven.gpg-plugin.version}</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.wrapper</groupId>
+                    <artifactId>maven-wrapper</artifactId>
+                    <version>${maven.wrapper-plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
